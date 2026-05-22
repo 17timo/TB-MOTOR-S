@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galerie 3D — TB Motor's</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Three.js via importmap -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <style>
+    /* ── Reset & tokens ────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --gold:    #c9a96e;
+      --gold-lt: #f0e6d0;
+      --gold-dk: #8a6d3b;
+      --white:   #f0ede8;
+      --dim:     rgba(240,237,232,.45);
+      --dim2:    rgba(240,237,232,.2);
+      --bg:      #000000;
+      --bg2:     #080808;
+      --bg3:     #0e0e0e;
+      --card:    rgba(255,255,255,.032);
+      --border:  rgba(201,169,110,.14);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Gallery section ───────────────────────────────────── */
+    #gallery { padding: 80px 0 0; background: var(--bg); }
+
+    .gallery-header {
+      max-width: 1280px; margin: 0 auto 3.5rem;
+      padding: 0 5%;
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+    }
+    .eyebrow {
+      font-size: .58rem; letter-spacing: .35em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: .7rem; display: block;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      font-weight: 300; line-height: 1.05; color: var(--white);
+    }
+    .gcl-color {
+      font-size: .52rem; letter-spacing: .4em; text-transform: uppercase;
+      color: var(--gold); margin-top: .28rem; font-weight: 400;
+    }
+
+    /* ── 3D Scene ──────────────────────────────────────────── */
+    .gallery-3d-outer { position: relative; }
+    .gallery-3d-scene {
+      position: relative;
+      height: clamp(420px, 62vh, 700px);
+      overflow: hidden;
+      background: #000;
+    }
+    #gallery-canvas-wrap {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      will-change: opacity;
+      transform: translateZ(0);
+    }
+    #gallery-canvas-wrap canvas {
+      width: 100% !important; height: 100% !important; display: block;
+    }
+    .gallery-3d-scene::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 5;
+      pointer-events: none;
+      background:
+        linear-gradient(to right,  rgba(0,0,0,.85) 0%, transparent 22%, transparent 78%, rgba(0,0,0,.85) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,.6)  0%, transparent 18%, transparent 82%, rgba(0,0,0,.7)  100%);
+    }
+
+    /* ── Spec columns ──────────────────────────────────────── */
+    .spec-col {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      z-index: 10; display: flex; flex-direction: column; gap: 1.3rem;
+      width: clamp(170px, 18vw, 230px);
+    }
+    .spec-col-left  { left: clamp(.8rem, 3.5%, 5%); }
+    .spec-col-right { right: clamp(.8rem, 3.5%, 5%); text-align: right; align-items: flex-end; }
+    .spec-card {
+      background: rgba(4,4,4,.72);
+      border: 1px solid rgba(201,169,110,.13);
+      padding: 1rem 1.2rem;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      position: relative;
+      transition: border-color .3s, background .3s;
+    }
+    .spec-card:hover { background: rgba(201,169,110,.06); border-color: rgba(201,169,110,.3); }
+    .spec-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; width: 28px; height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+    .spec-col-right .spec-card::before { left: auto; right: 0; }
+    .spec-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 300; line-height: 1;
+      color: var(--gold);
+      display: flex; align-items: baseline; gap: .2rem;
+    }
+    .spec-col-right .spec-val { justify-content: flex-end; }
+    .spec-suf {
+      font-family: 'Inter', sans-serif;
+      font-size: .5rem; letter-spacing: .15em;
+      color: rgba(201,169,110,.6); text-transform: uppercase;
+    }
+    .spec-lbl {
+      font-size: .58rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--white);
+      margin-top: .4rem;
+    }
+    .spec-sub {
+      font-size: .52rem; letter-spacing: .04em;
+      color: var(--dim2); margin-top: .18rem;
+    }
+
+    /* ── Center label ──────────────────────────────────────── */
+    .gallery-center-label {
+      position: absolute; bottom: 1.5rem; left: 50%;
+      transform: translateX(-50%);
+      z-index: 10; text-align: center;
+      pointer-events: none;
+    }
+    .gcl-model {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      font-weight: 300; letter-spacing: .35em;
+      text-transform: uppercase; color: rgba(240,237,232,.15);
+      white-space: nowrap;
+    }
+    .gcl-hint {
+      font-size: .48rem; letter-spacing: .45em;
+      text-transform: uppercase; color: rgba(201,169,110,.35);
+      margin-top: .3rem; display: flex; align-items: center;
+      justify-content: center; gap: .6rem;
+    }
+    .gcl-hint::before, .gcl-hint::after {
+      content: ''; display: block; width: 16px; height: 1px;
+      background: rgba(201,169,110,.3);
+    }
+
+    /* ── Spec bar ──────────────────────────────────────────── */
+    .spec-bar {
+      position: relative; z-index: 10;
+      background: rgba(2,2,2,.96);
+      border-top: 1px solid var(--border);
+      display: flex; align-items: stretch;
+    }
+    .spec-bar-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 1.5rem 1rem; gap: .35rem;
+      border-right: 1px solid var(--border);
+      transition: background .3s; cursor: default;
+    }
+    .spec-bar-item:last-child { border-right: none; }
+    .spec-bar-item:hover { background: rgba(201,169,110,.04); }
+    .spec-bar-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 2.2vw, 1.5rem);
+      font-weight: 300; color: var(--gold);
+    }
+    .spec-bar-lbl {
+      font-size: .48rem; letter-spacing: .28em;
+      text-transform: uppercase; color: var(--dim); text-align: center;
+    }
+
+    /* ── Carousel nav ──────────────────────────────────────── */
+    .gal-carousel-nav { display: flex; align-items: center; gap: .9rem; }
+    .gal-nav-btn {
+      background: transparent;
+      border: 1px solid rgba(201,169,110,.22);
+      color: var(--gold);
+      width: 36px; height: 36px; border-radius: 50%;
+      cursor: pointer; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .3s, border-color .3s;
+      font-family: 'Inter', sans-serif; line-height: 1;
+    }
+    .gal-nav-btn:hover { background: rgba(201,169,110,.12); border-color: var(--gold); }
+    .gal-counter {
+      font-size: .58rem; letter-spacing: .22em;
+      color: var(--dim2); min-width: 2.4rem; text-align: center;
+    }
+    .gal-dots { display: flex; gap: .45rem; align-items: center; }
+    .gal-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(201,169,110,.22); cursor: pointer;
+      transition: background .35s, transform .35s;
+    }
+    .gal-dot.active { background: var(--gold); transform: scale(1.35); }
+
+    /* ── Overlay arrows ────────────────────────────────────── */
+    .gal-overlay-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      z-index: 20;
+      background: rgba(4,4,4,.72);
+      border: 1px solid rgba(201,169,110,.22);
+      color: var(--gold);
+      width: 46px; height: 46px; border-radius: 50%;
+      cursor: pointer; font-size: 1.55rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .3s, border-color .3s, box-shadow .3s;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    }
+    .gal-overlay-arrow:hover {
+      background: rgba(201,169,110,.15);
+      border-color: var(--gold);
+      box-shadow: 0 0 18px rgba(201,169,110,.18);
+    }
+    .gal-overlay-prev { left: 23%; }
+    .gal-overlay-next { right: 23%; }
+
+    /* ── Transition fade ───────────────────────────────────── */
+    #gallery-canvas-wrap { transition: opacity .16s ease; }
+    #gallery-canvas-wrap.gal-fading { opacity: 0 !important; }
+
+    /* ── Responsive ────────────────────────────────────────── */
+    @media (max-width: 1100px) {
+      .spec-col { width: clamp(140px, 15vw, 180px); gap: 1rem; }
+      .spec-card { padding: .75rem .9rem; }
+      .gal-overlay-prev { left: 22%; }
+      .gal-overlay-next { right: 22%; }
+    }
+    @media (max-width: 820px) {
+      .gallery-3d-scene { height: 360px; }
+      .spec-col { display: none; }
+      .gal-overlay-prev { left: .8rem; }
+      .gal-overlay-next { right: .8rem; }
+    }
+    @media (max-width: 640px) {
+      .spec-bar { flex-wrap: wrap; }
+      .spec-bar-item { flex: 1 0 50%; border-bottom: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION GALERIE 3D
+     ⚠ Les fichiers .glb doivent être accessibles à ces chemins :
+       /bmw_m4_competition_m_package.glb
+       /2018_porsche_911.glb
+       /lamborghini_aventador_svj_sdc__free.glb
+       /mercedes_amg_gt63.glb
+     Adaptez modelPath dans CAR_VARIANTS si besoin.
+══════════════════════════════════════════════════════════ -->
+<section id="gallery">
+
+  <div class="gallery-header">
+    <div>
+      <span class="eyebrow">Caractéristiques · 360°</span>
+      <h2 class="section-title" id="gal-title">BMW M4 Competition</h2>
+      <p class="gcl-color" id="gal-color-tag" style="margin-top:.5rem">Noir Saphir Métallisé</p>
+    </div>
+    <div class="gal-carousel-nav">
+      <button class="gal-nav-btn" id="btn-prev" aria-label="Précédent">&#8592;</button>
+      <div class="gal-counter"><span id="gal-cur">1</span>&thinsp;/&thinsp;<span id="gal-tot">4</span></div>
+      <button class="gal-nav-btn" id="btn-next" aria-label="Suivant">&#8594;</button>
+      <div class="gal-dots" id="gal-dots"></div>
+    </div>
+  </div>
+
+  <div class="gallery-3d-outer">
+    <div class="gallery-3d-scene">
+
+      <div id="gallery-canvas-wrap"></div>
+
+      <button class="gal-overlay-arrow gal-overlay-prev" id="arrow-prev" aria-label="Précédent">&#8249;</button>
+      <button class="gal-overlay-arrow gal-overlay-next" id="arrow-next" aria-label="Suivant">&#8250;</button>
+
+      <div class="gallery-center-label">
+        <div class="gcl-model" id="gcl-model">S58 · TwinPower Turbo</div>
+        <div class="gcl-color" id="gcl-color" style="margin-top:.3rem">Noir Saphir Métallisé</div>
+        <div class="gcl-hint">Rotation automatique 360°</div>
+      </div>
+
+      <!-- Spec colonnes gauche -->
+      <div class="spec-col spec-col-left">
+        <div class="spec-card" data-slot="l1">
+          <div class="spec-val"><span class="sv-num">510</span><span class="spec-suf sv-suf">ch</span></div>
+          <div class="spec-lbl sv-lbl">Puissance maximale</div>
+          <div class="spec-sub sv-sub">à 6 250 tr/min</div>
+        </div>
+        <div class="spec-card" data-slot="l2">
+          <div class="spec-val"><span class="sv-num">650</span><span class="spec-suf sv-suf">Nm</span></div>
+          <div class="spec-lbl sv-lbl">Couple maximal</div>
+          <div class="spec-sub sv-sub">de 2 750 à 5 500 tr/min</div>
+        </div>
+        <div class="spec-card" data-slot="l3">
+          <div class="spec-val"><span class="sv-num">6</span><span class="spec-suf sv-suf">cyl.</span></div>
+          <div class="spec-lbl sv-lbl">Cylindres en ligne</div>
+          <div class="spec-sub sv-sub">Bloc S58 · 3.0L</div>
+        </div>
+      </div>
+
+      <!-- Spec colonnes droite -->
+      <div class="spec-col spec-col-right">
+        <div class="spec-card" data-slot="r1">
+          <div class="spec-val"><span class="sv-num">3.5</span><span class="spec-suf sv-suf">s</span></div>
+          <div class="spec-lbl sv-lbl">0 à 100 km/h</div>
+          <div class="spec-sub sv-sub">M Launch Control</div>
+        </div>
+        <div class="spec-card" data-slot="r2">
+          <div class="spec-val"><span class="sv-num">290</span><span class="spec-suf sv-suf">km/h</span></div>
+          <div class="spec-lbl sv-lbl">Vitesse maximale</div>
+          <div class="spec-sub sv-sub">Déverrouillable circuit</div>
+        </div>
+        <div class="spec-card" data-slot="r3">
+          <div class="spec-val"><span class="sv-num">8</span><span class="spec-suf sv-suf">rpt.</span></div>
+          <div class="spec-lbl sv-lbl">M Steptronic</div>
+          <div class="spec-sub sv-sub">Palettes aluminium</div>
+        </div>
+      </div>
+
+    </div><!-- /gallery-3d-scene -->
+
+    <!-- Spec bar bas -->
+    <div class="spec-bar">
+      <div class="spec-bar-item"><span class="spec-bar-val" id="sb-1-val">M xDrive</span><span class="spec-bar-lbl" id="sb-1-lbl">Transmission intégrale</span></div>
+      <div class="spec-bar-item"><span class="spec-bar-val" id="sb-2-val">1 725 kg</span><span class="spec-bar-lbl" id="sb-2-lbl">Poids à vide</span></div>
+      <div class="spec-bar-item"><span class="spec-bar-val" id="sb-3-val">M Carbon</span><span class="spec-bar-lbl" id="sb-3-lbl">Freins céramique</span></div>
+      <div class="spec-bar-item"><span class="spec-bar-val" id="sb-4-val">89 900 €</span><span class="spec-bar-lbl" id="sb-4-lbl">Prix de départ</span></div>
+      <div class="spec-bar-item"><span class="spec-bar-val" id="sb-5-val">2 857 mm</span><span class="spec-bar-lbl" id="sb-5-lbl">Empattement</span></div>
+    </div>
+
+  </div><!-- /gallery-3d-outer -->
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     JAVASCRIPT — Three.js gallery (vanilla, no framework)
+══════════════════════════════════════════════════════════ -->
+<script type="module">
+import * as THREE from 'three'
+import { GLTFLoader }      from 'three/addons/loaders/GLTFLoader.js'
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js'
+
+/* ── Données voitures ─────────────────────────────────────── */
+const CAR_VARIANTS = [
+  {
+    name: 'BMW M4 Competition', color: 'Noir Saphir Métallisé', engine: 'S58 · TwinPower Turbo',
+    modelPath: '/bmw_m4_competition_m_package.glb',
+    paintHex: 0x0e0e12, roughness: 0.20, metalness: 0.88, clearcoat: 0.85,
+    specLeft:  [
+      { val:'510',  suf:'ch',   lbl:'Puissance maximale', sub:'à 6 250 tr/min' },
+      { val:'650',  suf:'Nm',   lbl:'Couple maximal',     sub:'de 2 750 à 5 500 tr/min' },
+      { val:'6',    suf:'cyl.', lbl:'Cylindres en ligne', sub:'Bloc S58 · 3.0L' },
+    ],
+    specRight: [
+      { val:'3.5',  suf:'s',    lbl:'0 à 100 km/h',      sub:'M Launch Control' },
+      { val:'290',  suf:'km/h', lbl:'Vitesse maximale',   sub:'Déverrouillable circuit' },
+      { val:'8',    suf:'rpt.', lbl:'M Steptronic',       sub:'Palettes aluminium' },
+    ],
+    bar: [
+      { val:'M xDrive',  lbl:'Transmission intégrale' },
+      { val:'1 725 kg',  lbl:'Poids à vide' },
+      { val:'M Carbon',  lbl:'Freins céramique' },
+      { val:'89 900 €',  lbl:'Prix de départ' },
+      { val:'2 857 mm',  lbl:'Empattement' },
+    ],
+  },
+  {
+    name: 'Porsche 911 Carrera S', color: 'Blanc GT Métallisé', engine: 'Flat-6 · 3.0L Biturbo',
+    modelPath: '/2018_porsche_911.glb',
+    paintHex: 0xf0eee8, roughness: 0.22, metalness: 0.20, clearcoat: 0.92,
+    specLeft:  [
+      { val:'450',  suf:'ch',   lbl:'Puissance maximale', sub:'à 6 500 tr/min' },
+      { val:'530',  suf:'Nm',   lbl:'Couple maximal',     sub:'à 1 700 tr/min' },
+      { val:'3.0',  suf:'L',    lbl:'Cylindrée',          sub:'Flat-6 Biturbo' },
+    ],
+    specRight: [
+      { val:'4.0',  suf:'s',    lbl:'0 à 100 km/h',      sub:'PDK Sport Chrono' },
+      { val:'305',  suf:'km/h', lbl:'Vitesse maximale',   sub:'Option Sport Plus' },
+      { val:'2018', suf:'',     lbl:'Millésime',          sub:'Immatriculation France' },
+    ],
+    bar: [
+      { val:'Propulsion',  lbl:'Roues arrière' },
+      { val:'1 430 kg',    lbl:'Poids à vide' },
+      { val:'PASM',        lbl:'Suspension active' },
+      { val:'124 900 €',   lbl:'Prix de départ' },
+      { val:'2 450 mm',    lbl:'Empattement' },
+    ],
+  },
+  {
+    name: 'Lamborghini Aventador SVJ', color: 'Arancio Atlas', engine: 'V12 · 6.5L Atmosphérique',
+    modelPath: '/lamborghini_aventador_svj_sdc__free.glb',
+    paintHex: 0xe06020, roughness: 0.16, metalness: 0.45, clearcoat: 0.98,
+    specLeft:  [
+      { val:'770',  suf:'ch',   lbl:'Puissance maximale', sub:'à 8 500 tr/min' },
+      { val:'720',  suf:'Nm',   lbl:'Couple maximal',     sub:'à 6 750 tr/min' },
+      { val:'6.5',  suf:'L',    lbl:'Cylindrée',          sub:'V12 Atmosphérique' },
+    ],
+    specRight: [
+      { val:'2.8',  suf:'s',    lbl:'0 à 100 km/h',      sub:'Launch Control' },
+      { val:'350',  suf:'km/h', lbl:'Vitesse maximale',   sub:'Déverrouillée' },
+      { val:'7',    suf:'rpt.', lbl:'ISR Séquentielle',   sub:'Palettes carbone' },
+    ],
+    bar: [
+      { val:'AWD',         lbl:'Transmission intégrale' },
+      { val:'1 525 kg',    lbl:'Poids à vide' },
+      { val:'Carbone',     lbl:'Monocoque carbone' },
+      { val:'394 000 €',   lbl:'Prix de départ' },
+      { val:'2 700 mm',    lbl:'Empattement' },
+    ],
+  },
+  {
+    name: 'Mercedes-AMG GT 63 S', color: 'Gris Graphite Métallisé', engine: 'V8 · 4.0L Biturbo AMG',
+    modelPath: '/mercedes_amg_gt63.glb',
+    paintHex: 0x3a3a3c, roughness: 0.25, metalness: 0.75, clearcoat: 0.88,
+    specLeft:  [
+      { val:'639',  suf:'ch',   lbl:'Puissance maximale', sub:'à 5 500 tr/min' },
+      { val:'900',  suf:'Nm',   lbl:'Couple maximal',     sub:'à 2 500 tr/min' },
+      { val:'4.0',  suf:'L',    lbl:'Cylindrée',          sub:'V8 Biturbo AMG' },
+    ],
+    specRight: [
+      { val:'3.2',  suf:'s',    lbl:'0 à 100 km/h',      sub:'4MATIC+ intégral' },
+      { val:'315',  suf:'km/h', lbl:'Vitesse maximale',   sub:'Déverrouillée' },
+      { val:'9',    suf:'rpt.', lbl:'AMG Speedshift',     sub:'Palettes magnésium' },
+    ],
+    bar: [
+      { val:'4MATIC+',     lbl:'Transmission intégrale' },
+      { val:'2 045 kg',    lbl:'Poids à vide' },
+      { val:'Céramique',   lbl:'Freins composite' },
+      { val:'174 900 €',   lbl:'Prix de départ' },
+      { val:'2 951 mm',    lbl:'Empattement' },
+    ],
+  },
+]
+
+/* ── État global ──────────────────────────────────────────── */
+const galState = {
+  renderer: null, scene: null, camera: null,
+  initialized: false, angle: 0,
+  slots: [], currentVariant: 0, transitioning: false, animFrameId: null,
+  platform: null,
+  onResize: null, galObs: null, onVisChange: null,
+}
+
+/* ── Initialisation des dots ──────────────────────────────── */
+const dotsEl = document.getElementById('gal-dots')
+CAR_VARIANTS.forEach((_, i) => {
+  const dot = document.createElement('span')
+  dot.className = 'gal-dot' + (i === 0 ? ' active' : '')
+  dot.dataset.idx = i
+  dot.addEventListener('click', () => galGoTo(i))
+  dotsEl.appendChild(dot)
+})
+
+/* ── Mise à jour des specs via DOM ────────────────────────── */
+function applyVariant(idx) {
+  const v = CAR_VARIANTS[idx]
+  document.getElementById('gal-title').textContent    = v.name
+  document.getElementById('gal-color-tag').textContent = v.color
+  document.getElementById('gcl-model').textContent    = v.engine
+  document.getElementById('gcl-color').textContent    = v.color
+  document.getElementById('gal-cur').textContent      = idx + 1
+
+  v.specLeft.forEach((s, i) => {
+    const card = document.querySelector(`.spec-card[data-slot="l${i+1}"]`)
+    if (!card) return
+    card.querySelector('.sv-num').textContent = s.val
+    card.querySelector('.sv-suf').textContent = s.suf
+    card.querySelector('.sv-lbl').textContent = s.lbl
+    card.querySelector('.sv-sub').textContent = s.sub
+  })
+  v.specRight.forEach((s, i) => {
+    const card = document.querySelector(`.spec-card[data-slot="r${i+1}"]`)
+    if (!card) return
+    card.querySelector('.sv-num').textContent = s.val
+    card.querySelector('.sv-suf').textContent = s.suf
+    card.querySelector('.sv-lbl').textContent = s.lbl
+    card.querySelector('.sv-sub').textContent = s.sub
+  })
+  v.bar.forEach((b, i) => {
+    const vEl = document.getElementById(`sb-${i+1}-val`)
+    const lEl = document.getElementById(`sb-${i+1}-lbl`)
+    if (vEl) vEl.textContent = b.val
+    if (lEl) lEl.textContent = b.lbl
+  })
+
+  document.querySelectorAll('.gal-dot').forEach((d, i) =>
+    d.classList.toggle('active', i === idx)
+  )
+}
+
+/* ── Navigation carousel ──────────────────────────────────── */
+function galGoTo(idx) {
+  const total = CAR_VARIANTS.length
+  idx = ((idx % total) + total) % total
+  if (idx === galState.currentVariant || galState.transitioning) return
+  galState.transitioning = true
+
+  const prev = galState.currentVariant
+  galState.currentVariant = idx
+  applyVariant(idx)
+
+  const wrapEl = document.getElementById('gallery-canvas-wrap')
+  if (wrapEl) wrapEl.classList.add('gal-fading')
+  setTimeout(() => {
+    if (galState.slots[prev]) galState.slots[prev].visible = false
+    if (galState.slots[idx])  galState.slots[idx].visible  = true
+    if (wrapEl) wrapEl.classList.remove('gal-fading')
+    galState.transitioning = false
+  }, 160)
+}
+
+/* ── Helpers Three.js ─────────────────────────────────────── */
+function normalizeGalModel(obj) {
+  const box      = new THREE.Box3().setFromObject(obj)
+  const size     = box.getSize(new THREE.Vector3())
+  const center   = box.getCenter(new THREE.Vector3())
+  const horizMax = Math.max(size.x, size.z) || Math.max(size.x, size.y, size.z)
+  obj.scale.setScalar(4.4 / horizMax)
+  obj.position.sub(center.multiplyScalar(4.4 / horizMax))
+  const floor2 = new THREE.Box3().setFromObject(obj)
+  obj.position.y -= floor2.min.y
+}
+
+function applyGalMat(obj, v) {
+  obj.traverse(child => {
+    if (!child.isMesh) return
+    child.castShadow = false; child.receiveShadow = false
+    const upgrade = (m) => {
+      if (!m) return m
+      const isPaint = !m.transparent &&
+                      (m.roughness  ?? 1) < 0.45 &&
+                      (m.metalness  ?? 0) < 0.93 &&
+                      !((m.emissiveIntensity ?? 0) > 0.1)
+      if (isPaint) {
+        return new THREE.MeshPhysicalMaterial({
+          color:           new THREE.Color(v.paintHex),
+          map:             m.map,       normalMap: m.normalMap,
+          normalScale:     m.normalScale?.clone(),
+          roughnessMap:    m.roughnessMap, metalnessMap: m.metalnessMap,
+          aoMap:           m.aoMap,     aoMapIntensity: m.aoMapIntensity,
+          emissive:        new THREE.Color(0, 0, 0),
+          alphaMap:        m.alphaMap,  side: m.side,
+          roughness:       v.roughness, metalness: v.metalness,
+          clearcoat:       v.clearcoat, clearcoatRoughness: 0.06,
+          envMapIntensity: 0.0,
+        })
+      }
+      const c = m.clone()
+      c.envMapIntensity = 0
+      return c
+    }
+    child.material = Array.isArray(child.material)
+      ? child.material.map(upgrade)
+      : upgrade(child.material)
+  })
+}
+
+function buildPlaceholder(v) {
+  const g   = new THREE.Group()
+  const mat = new THREE.MeshPhysicalMaterial({
+    color: v.paintHex, roughness: v.roughness, metalness: v.metalness,
+    clearcoat: v.clearcoat ?? 0.9, clearcoatRoughness: 0.06, envMapIntensity: 0,
+  })
+  const body  = new THREE.Mesh(new THREE.BoxGeometry(4.4, 0.75, 1.86), mat)
+  body.position.y = 0.52; g.add(body)
+  const cabin = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.68, 1.70), mat)
+  cabin.position.set(-0.15, 1.06, 0); g.add(cabin)
+  const wMat  = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9, metalness: 0.1 })
+  ;[[1.35,-1.02],[1.35,1.02],[-1.35,-1.02],[-1.35,1.02]].forEach(([x, z]) => {
+    const t = new THREE.Mesh(new THREE.CylinderGeometry(0.40, 0.40, 0.30, 32), wMat)
+    t.rotation.x = Math.PI / 2; t.position.set(x, 0.40, z); g.add(t)
+  })
+  return g
+}
+
+/* ── Init Three.js ────────────────────────────────────────── */
+async function initGallery() {
+  if (galState.initialized) return
+  galState.initialized = true
+
+  const gc = document.getElementById('gallery-canvas-wrap')
+  if (!gc) return
+  gc.style.opacity = '0'
+
+  const w = gc.offsetWidth  || window.innerWidth  || 1200
+  const h = gc.offsetHeight || 600
+
+  /* Renderer */
+  const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' })
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  renderer.setSize(w, h)
+  renderer.toneMapping         = THREE.ACESFilmicToneMapping
+  renderer.toneMappingExposure = 1.0
+  renderer.outputColorSpace    = THREE.SRGBColorSpace
+  renderer.shadowMap.enabled   = false
+  gc.appendChild(renderer.domElement)
+  galState.renderer = renderer
+
+  await new Promise(r => requestAnimationFrame(r))
+
+  /* Scene */
+  const scene = new THREE.Scene()
+  galState.scene = scene
+  scene.background = new THREE.Color(0x000000)
+  scene.fog = new THREE.Fog(0x000000, 22, 45)
+
+  /* Env map (reflets métalliques uniquement, pas de lumière) */
+  const pmrem = new THREE.PMREMGenerator(renderer)
+  pmrem.compileEquirectangularShader()
+  scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture
+  pmrem.dispose()
+
+  /* ── Garage noir & or ─────────────────────────────────── */
+  scene.add(Object.assign(
+    new THREE.Mesh(new THREE.PlaneGeometry(80, 80), new THREE.MeshBasicMaterial({ color: 0x080808 })),
+    { rotation: { x: -Math.PI / 2 }, position: { y: -0.002 } }
+  ))
+
+  const wall = new THREE.Mesh(
+    new THREE.CylinderGeometry(16, 16, 22, 96, 1, true),
+    new THREE.MeshBasicMaterial({ color: 0x0a0a0a, side: THREE.BackSide })
+  )
+  wall.position.y = 9; scene.add(wall)
+
+  const ceil = new THREE.Mesh(
+    new THREE.PlaneGeometry(36, 36),
+    new THREE.MeshBasicMaterial({ color: 0x080808 })
+  )
+  ceil.rotation.x = Math.PI / 2; ceil.position.y = 13; scene.add(ceil)
+
+  const goldWallMat = new THREE.MeshBasicMaterial({ color: 0xc9a96e, side: THREE.BackSide })
+  ;[
+    [15.95, 0.06,  4.8],
+    [15.95, 0.025, 0.012],
+    [15.95, 0.025, 12.5],
+  ].forEach(([r, h, y]) => {
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, 96, 1, true), goldWallMat)
+    m.position.y = y; scene.add(m)
+  })
+
+  /* ── Plateforme ───────────────────────────────────────── */
+  const platform = new THREE.Group()
+  const pBlack = new THREE.MeshPhysicalMaterial({ color: 0x030303, roughness: 0.04, metalness: 0.95, clearcoat: 1.0, clearcoatRoughness: 0.04, envMapIntensity: 0.6 })
+  const pGold  = new THREE.MeshPhysicalMaterial({ color: 0xc9a96e, roughness: 0.08, metalness: 1.0,  clearcoat: 0.9, clearcoatRoughness: 0.05, envMapIntensity: 1.0 })
+
+  platform.add(new THREE.Mesh(new THREE.CylinderGeometry(3.1, 3.1, 0.055, 128), pBlack))
+  platform.add(new THREE.Mesh(new THREE.CylinderGeometry(3.1, 3.1, 0.057, 128, 1, true), pGold))
+  const rimTop = new THREE.Mesh(new THREE.RingGeometry(2.88, 3.1, 128), pGold)
+  rimTop.rotation.x = -Math.PI / 2; rimTop.position.y = 0.028; platform.add(rimTop)
+  const platGlow = new THREE.PointLight(0xc9a96e, 5, 6, 2)
+  platGlow.position.y = -0.06; platform.add(platGlow)
+  platform.position.y = -0.0275
+  scene.add(platform)
+  galState.platform = platform
+
+  await new Promise(r => requestAnimationFrame(r))
+
+  /* Lumière — HemisphereLight uniquement, zéro tache blanche */
+  scene.add(new THREE.HemisphereLight(0xfff8e8, 0x030303, 1.1))
+
+  await new Promise(r => requestAnimationFrame(r))
+
+  /* Camera */
+  const camera = new THREE.PerspectiveCamera(38, w / h, 0.05, 150)
+  galState.camera = camera
+
+  /* Resize */
+  let resizeTimer = null
+  const onResize = () => {
+    clearTimeout(resizeTimer)
+    resizeTimer = setTimeout(() => {
+      const nw = gc.offsetWidth, nh = gc.offsetHeight
+      renderer.setSize(nw, nh)
+      camera.aspect = nw / nh; camera.updateProjectionMatrix()
+    }, 150)
+  }
+  window.addEventListener('resize', onResize)
+  galState.onResize = onResize
+
+  /* Placeholders */
+  const galSlots = CAR_VARIANTS.map((v, i) => {
+    const ph = buildPlaceholder(v)
+    ph.visible = (i === 0)
+    scene.add(ph)
+    return ph
+  })
+  galState.slots = galSlots
+
+  await new Promise(r => requestAnimationFrame(r))
+  applyVariant(0)
+
+  /* Render loop */
+  const GAL_RADIUS = 5.5, GAL_HEIGHT = 1.7
+  const galTarget = new THREE.Vector3(0, 0.6, 0)
+  let galVisible = false
+  let galPaused  = false
+
+  const galObs = new IntersectionObserver(e => { galVisible = e[0].isIntersecting }, { threshold: 0 })
+  galObs.observe(gc)
+  galState.galObs = galObs
+
+  const onVisChange = () => { galPaused = document.hidden }
+  document.addEventListener('visibilitychange', onVisChange)
+  galState.onVisChange = onVisChange
+
+  const loop = () => {
+    galState.animFrameId = requestAnimationFrame(loop)
+    if (!galVisible || galPaused) return
+    galState.angle += 0.003
+    if (galState.platform) galState.platform.rotation.y += 0.004
+    camera.position.set(
+      Math.sin(galState.angle) * GAL_RADIUS,
+      GAL_HEIGHT,
+      Math.cos(galState.angle) * GAL_RADIUS
+    )
+    camera.lookAt(galTarget)
+    renderer.render(scene, camera)
+  }
+  loop()
+
+  /* Révéler le canvas */
+  try { await renderer.compileAsync(scene, camera) } catch (_) {}
+  gc.style.transition = 'opacity 0.5s ease'
+  gc.style.opacity    = '1'
+
+  /* Charger les voitures (toutes via GLTFLoader) */
+  let compileQueue = Promise.resolve()
+  let mounted = true
+  galState._setUnmounted = () => { mounted = false }
+
+  CAR_VARIANTS.forEach((v, slotIdx) => {
+    new GLTFLoader().load(
+      v.modelPath,
+      gltf => {
+        if (!mounted) return
+        const real = gltf.scene
+        normalizeGalModel(real)
+        applyGalMat(real, v)
+        real.visible = (slotIdx === galState.currentVariant)
+        scene.add(real)
+
+        compileQueue = compileQueue.then(() => {
+          if (!mounted) return
+          return renderer.compileAsync(scene, camera)
+            .then(() => {
+              if (!mounted) return
+              const wasVis = galState.slots[slotIdx]?.visible
+              if (galState.slots[slotIdx]) scene.remove(galState.slots[slotIdx])
+              galState.slots[slotIdx] = real
+              real.visible = !!wasVis
+            })
+            .catch(() => {
+              if (!mounted) return
+              const wasVis = galState.slots[slotIdx]?.visible
+              if (galState.slots[slotIdx]) scene.remove(galState.slots[slotIdx])
+              galState.slots[slotIdx] = real
+              real.visible = !!wasVis
+            })
+        })
+      },
+      undefined,
+      () => { /* fichier manquant — placeholder reste */ }
+    )
+  })
+}
+
+/* ── Événements ───────────────────────────────────────────── */
+document.getElementById('btn-prev').addEventListener('click',   () => galGoTo(galState.currentVariant - 1))
+document.getElementById('btn-next').addEventListener('click',   () => galGoTo(galState.currentVariant + 1))
+document.getElementById('arrow-prev').addEventListener('click', () => galGoTo(galState.currentVariant - 1))
+document.getElementById('arrow-next').addEventListener('click', () => galGoTo(galState.currentVariant + 1))
+
+document.addEventListener('keydown', e => {
+  const r = document.getElementById('gallery').getBoundingClientRect()
+  if (r.bottom < 0 || r.top > window.innerHeight) return
+  if (e.key === 'ArrowLeft')  galGoTo(galState.currentVariant - 1)
+  if (e.key === 'ArrowRight') galGoTo(galState.currentVariant + 1)
+})
+
+let touchStartX = 0
+const sceneEl = document.querySelector('.gallery-3d-scene')
+sceneEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX }, { passive: true })
+sceneEl.addEventListener('touchend',   e => {
+  const dx = e.changedTouches[0].clientX - touchStartX
+  if (Math.abs(dx) > 40) galGoTo(galState.currentVariant + (dx < 0 ? 1 : -1))
+})
+
+/* ── Démarrage ────────────────────────────────────────────── */
+initGallery()
+</script>
+</body>
+</html>

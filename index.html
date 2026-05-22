@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TB Motor's | Achat, revente, import/export automobile</title>
+    <meta
+      name="description"
+      content="TB Motor's accompagne l'achat, la revente, l'import, l'export et le transport de véhicules en France et en Europe."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preload" as="image" href="assets/hero-gt3-tbmotors.png" />
+  </head>
+  <body>
+    <div class="loader" id="loader" aria-hidden="true">
+      <div class="loader-content">
+        <img src="assets/logo-clean.png" alt="TB Motor's" class="loader-logo" />
+        <div class="loader-bar"><div class="loader-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"></div>
+
+    <header class="site-header" data-header>
+      <a class="brand" href="#accueil" aria-label="Accueil TB Motor's">
+        <img src="assets/logo-clean.png" alt="TB Motor's" />
+      </a>
+
+      <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" data-nav-toggle>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" data-nav>
+        <a href="#services">Services</a>
+        <a href="#galerie">Galerie</a>
+        <a href="#avis">Avis</a>
+        <a href="#import">Import Europe</a>
+        <a href="#process">Accompagnement</a>
+        <a href="#contact">Contact</a>
+        <label class="language-switcher" aria-label="Langue">
+          <select data-language-select>
+            <option value="fr">FR</option>
+            <option value="en">EN</option>
+            <option value="nl">NL</option>
+            <option value="de">DE</option>
+          </select>
+        </label>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="accueil" aria-label="TB Motor's">
+        <picture class="hero-media">
+          <img src="assets/hero-gt3-tbmotors.png" alt="Voiture sportive avec plaque TB Motor's" fetchpriority="high" />
+        </picture>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Achat - Revente - Import / Export</p>
+          <h1>TB Motor's</h1>
+          <p>
+            Votre partenaire automobile pour trouver, importer, vendre, transporter ou reprendre un véhicule avec un
+            accompagnement clair, rapide et personnalisé.
+          </p>
+          <div class="hero-actions">
+            <button class="button primary" type="button" data-project-shortcut="Projet automobile">
+              Demander un accompagnement
+            </button>
+            <a class="button secondary" href="#services">Voir les services</a>
+          </div>
+        </div>
+        <div class="scroll-hint" aria-hidden="true">
+          <div class="scroll-hint-line"></div>
+          <span class="scroll-hint-label">Scroll</span>
+        </div>
+      </section>
+
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <span class="marquee-item">Achat</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Revente</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Import Europe</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Export</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Transport</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Reprise</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Excellence</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Performance</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Achat</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Revente</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Import Europe</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Export</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Transport</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Reprise</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Excellence</span><span class="marquee-sep">—</span>
+          <span class="marquee-item">Performance</span><span class="marquee-sep">—</span>
+        </div>
+      </div>
+
+      <section class="intro section">
+        <div class="section-inner two-col">
+          <div>
+            <p class="eyebrow">Basé en France - Réseau européen</p>
+            <h2>Des véhicules sélectionnés, des démarches simplifiées.</h2>
+          </div>
+          <p>
+            TB Motor's intervient sur l'achat, la revente, la reprise et l'importation européenne de véhicules. Nous
+            aidons particuliers et professionnels à avancer sereinement, depuis la recherche du véhicule jusqu'à la
+            livraison et aux formalités.
+          </p>
+        </div>
+      </section>
+
+      <section class="stats" aria-label="Chiffres clés">
+        <div class="section-inner stats-grid">
+          <div class="stat-item" data-reveal>
+            <div class="stat-value"><span data-count="200">200</span>+</div>
+            <span class="stat-label">Projets accompagnés</span>
+          </div>
+          <div class="stat-item" data-reveal>
+            <div class="stat-value"><span data-count="6">6</span></div>
+            <span class="stat-label">Pays couverts</span>
+          </div>
+          <div class="stat-item" data-reveal>
+            <div class="stat-value"><span data-count="5">5</span>+</div>
+            <span class="stat-label">Ans d'expérience</span>
+          </div>
+          <div class="stat-item" data-reveal>
+            <div class="stat-value"><span data-count="4">4</span></div>
+            <span class="stat-label">Services sur mesure</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="services section" id="services">
+        <div class="section-inner">
+          <div class="section-title">
+            <p class="eyebrow">Nos expertises</p>
+            <h2>Un service automobile complet</h2>
+          </div>
+
+          <div class="service-grid">
+            <button class="service-card is-active" type="button" data-service="achat" data-reveal>
+              <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg></span>
+              <h3>Achat de véhicule</h3>
+              <p>Recherche ciblée selon votre budget, vos critères et vos attentes de fiabilité.</p>
+            </button>
+            <button class="service-card" type="button" data-service="revente" data-reveal>
+              <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1" fill="currentColor" stroke="none"/></svg></span>
+              <h3>Revente accompagnée</h3>
+              <p>Valorisation, estimation et mise en relation pour vendre dans de bonnes conditions.</p>
+            </button>
+            <button class="service-card" type="button" data-service="reprise" data-reveal>
+              <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 16V4m0 0L3 8m4-4 4 4"/><path d="M17 8v12m0 0 4-4m-4 4-4-4"/></svg></span>
+              <h3>Reprise possible</h3>
+              <p>Estimation détaillée de votre véhicule actuel pour faciliter votre prochain projet.</p>
+            </button>
+            <button class="service-card" type="button" data-service="import" data-reveal>
+              <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 4 9 15 15 0 0 1-4 9 15 15 0 0 1-4-9 15 15 0 0 1 4-9z"/></svg></span>
+              <h3>Import / Export</h3>
+              <p>Accompagnement France et international, avec suivi des étapes essentielles.</p>
+            </button>
+          </div>
+
+          <div class="service-detail" data-service-detail>
+            <div>
+              <p class="eyebrow" data-detail-kicker>Achat de véhicule</p>
+              <h3 data-detail-title>Recherche personnalisée</h3>
+              <p data-detail-text>
+                Vous indiquez le modèle, le budget, le kilométrage souhaité, la motorisation et le délai. TB Motor's
+                cherche les opportunités cohérentes, vérifie les points importants et vous accompagne jusqu'à l'achat.
+              </p>
+            </div>
+            <button class="button primary" type="button" data-detail-action data-project-shortcut="Achat de véhicule">
+              Faire une demande d'achat
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="import section" id="import">
+        <div class="section-inner split">
+          <div class="import-panel">
+            <img src="assets/logo-clean.png" alt="" />
+          </div>
+          <div>
+            <p class="eyebrow">Importation européenne</p>
+            <h2>Un véhicule européen, sans complexité inutile.</h2>
+            <p>
+              Nous vous accompagnons dans la sélection, la vérification, la négociation, le transport et les démarches
+              liées à l'importation. L'objectif: un achat lisible, conforme et sécurisé.
+            </p>
+            <ul class="check-list">
+              <li>Recherche personnalisée en Europe</li>
+              <li>Contrôle des informations du véhicule</li>
+              <li>Suivi administratif et logistique</li>
+              <li>Accompagnement jusqu'à la livraison</li>
+            </ul>
+            <button class="button primary inline-action" type="button" data-project-shortcut="Import Europe">
+              Faire une demande de projet
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery section" id="galerie">
+        <div class="section-inner">
+          <div class="section-title">
+            <p class="eyebrow">Véhicules et transport</p>
+            <h2>Cliquez sur une photo pour la voir en grand.</h2>
+          </div>
+
+          <div class="gallery-grid">
+            <button class="gallery-card large" type="button" data-lightbox="assets/hero-gt3-tbmotors.png" data-reveal>
+              <img src="assets/hero-gt3-tbmotors.png" alt="Voiture sportive arrière avec plaque TB Motor's" loading="lazy" />
+              <div>
+                <span>Sportive premium</span>
+                <h3>GT haut de gamme</h3>
+              </div>
+            </button>
+            <button class="gallery-card" type="button" data-lightbox="assets/gallery-showroom-tbmotors.png" data-reveal>
+              <img src="assets/gallery-showroom-tbmotors.png" alt="Voiture en showroom avec plaque TB Motor's" loading="lazy" />
+              <div>
+                <span>Achat et revente</span>
+                <h3>Présentation showroom</h3>
+              </div>
+            </button>
+            <button class="gallery-card" type="button" data-lightbox="assets/gallery-transport-tbmotors.png" data-reveal>
+              <img src="assets/gallery-transport-tbmotors.png" alt="Transport de voiture avec plaque TB Motor's" loading="lazy" />
+              <div>
+                <span>Transport</span>
+                <h3>Livraison coordonnée</h3>
+              </div>
+            </button>
+            <button class="gallery-card wide" type="button" data-lightbox="assets/gallery-handover-tbmotors.png" data-reveal>
+              <img src="assets/gallery-handover-tbmotors.png" alt="Remise de clés avec véhicule TB Motor's" loading="lazy" />
+              <div>
+                <span>Accompagnement</span>
+                <h3>Remise du véhicule</h3>
+              </div>
+            </button>
+            <button class="gallery-card wide" type="button" data-lightbox="assets/gallery-vente-import-bmw.png" data-reveal>
+              <img src="assets/gallery-vente-import-bmw.png" alt="Vente et import de véhicule TB Motor's" loading="lazy" />
+              <div>
+                <span>Vente / Import</span>
+                <h3>Véhicule vendu</h3>
+              </div>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="reviews section" id="avis">
+        <div class="section-inner">
+          <div class="section-title">
+            <p class="eyebrow">Avis clients</p>
+            <h2>Ils nous ont confié leur projet automobile.</h2>
+          </div>
+
+          <div class="review-grid">
+            <article class="review-card" data-reveal>
+              <div class="stars" aria-label="5 étoiles">★★★★★</div>
+              <p>
+                Recherche rapide, suivi sérieux et véhicule conforme à ce qui avait été annoncé. L'import s'est fait
+                simplement, avec des explications claires à chaque étape.
+              </p>
+              <strong>Maxime D.</strong>
+              <span>Import Allemagne</span>
+            </article>
+            <article class="review-card" data-reveal>
+              <div class="stars" aria-label="5 étoiles">★★★★★</div>
+              <p>
+                Très bon accompagnement pour la reprise de mon ancien véhicule. L'estimation était détaillée et la
+                transition vers le nouveau projet a été fluide.
+              </p>
+              <strong>Sabrina L.</strong>
+              <span>Reprise et achat</span>
+            </article>
+            <article class="review-card" data-reveal>
+              <div class="stars" aria-label="5 étoiles">★★★★★</div>
+              <p>
+                Service professionnel, disponible et transparent. Les photos, le contrôle et le transport ont été suivis
+                jusqu'à la livraison.
+              </p>
+              <strong>Thomas R.</strong>
+              <span>Transport Europe</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="process section" id="process">
+        <div class="section-inner">
+          <div class="section-title">
+            <p class="eyebrow">Méthode</p>
+            <h2>De la recherche à la livraison, un accompagnement complet.</h2>
+          </div>
+          <div class="steps">
+            <article data-reveal>
+              <span>01</span>
+              <h3>Définition du projet</h3>
+              <p>Vous indiquez le modèle recherché, le budget, le kilométrage, la motorisation, les options, le délai et les critères non négociables.</p>
+            </article>
+            <article data-reveal>
+              <span>02</span>
+              <h3>Recherche ciblée</h3>
+              <p>Nous recherchons les annonces cohérentes en France et en Europe, puis nous écartons les véhicules incohérents, trop chers ou mal documentés.</p>
+            </article>
+            <article data-reveal>
+              <span>03</span>
+              <h3>Vérification</h3>
+              <p>Nous contrôlons les informations importantes: historique, kilométrage, entretien, options, état général, documents et cohérence du prix.</p>
+            </article>
+            <article data-reveal>
+              <span>04</span>
+              <h3>Négociation</h3>
+              <p>Nous échangeons avec le vendeur, posons les bonnes questions, cadrons le prix et préparons les conditions d'achat ou de reprise.</p>
+            </article>
+            <article data-reveal>
+              <span>05</span>
+              <h3>Transport et formalités</h3>
+              <p>Nous organisons le transport, suivons les démarches liées à l'importation et préparons les éléments nécessaires à l'immatriculation.</p>
+            </article>
+            <article data-reveal>
+              <span>06</span>
+              <h3>Livraison finale</h3>
+              <p>Vous êtes accompagné jusqu'à la remise du véhicule, avec un suivi clair jusqu'à la livraison et aux dernières formalités.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact section" id="contact">
+        <div class="section-inner contact-layout">
+          <div>
+            <p class="eyebrow">Contact</p>
+            <h2>Parlez-nous de votre projet automobile.</h2>
+            <p>
+              Achat, revente, reprise, importation ou transport: remplissez les informations utiles et nous vous
+              recontactons pour cadrer la suite.
+            </p>
+            <div class="contact-lines">
+              <a href="tel:+33600000000">06 XX XX XX XX</a>
+              <a href="mailto:contact@tbmotors.fr">contact@tbmotors.fr</a>
+              <a href="https://www.instagram.com/tb_motors.officiel" target="_blank" rel="noreferrer">
+                @tb_motors.officiel
+              </a>
+            </div>
+            <div class="social-links" aria-label="Réseaux sociaux">
+              <a href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook TB Motor's">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M14.2 8.3V6.7c0-.8.2-1.3 1.4-1.3h1.7V2.2C16.5 2.1 15.6 2 14.5 2c-2.8 0-4.7 1.7-4.7 4.8v1.5H6.7v3.6h3.1V22h3.8V11.9h3.2l.5-3.6h-3.1Z" />
+                </svg>
+                Facebook
+              </a>
+              <a href="https://www.instagram.com/tb_motors.officiel" target="_blank" rel="noreferrer" aria-label="Instagram TB Motor's">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7.6 2h8.8A5.6 5.6 0 0 1 22 7.6v8.8a5.6 5.6 0 0 1-5.6 5.6H7.6A5.6 5.6 0 0 1 2 16.4V7.6A5.6 5.6 0 0 1 7.6 2Zm0 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6Zm4.4 3.3a4.7 4.7 0 1 1 0 9.4 4.7 4.7 0 0 1 0-9.4Zm0 2a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 0 0 0-5.4Zm5-2.3a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z" />
+                </svg>
+                Instagram
+              </a>
+            </div>
+          </div>
+
+          <form class="contact-form" action="mailto:contact@tbmotors.fr" method="post" enctype="text/plain">
+            <div class="form-grid">
+              <label>
+                Nom
+                <input type="text" name="Nom" autocomplete="name" required />
+              </label>
+              <label>
+                Téléphone
+                <input type="tel" name="Téléphone" autocomplete="tel" required />
+              </label>
+            </div>
+
+            <label>
+              Type de projet
+              <select name="Projet" data-project-select required>
+                <option value="">Choisir</option>
+                <option value="Achat de véhicule">Achat de véhicule</option>
+                <option value="Revente accompagnée">Revente accompagnée</option>
+                <option value="Reprise / estimation">Reprise / estimation</option>
+                <option value="Import Europe">Import Europe</option>
+                <option value="Export">Export</option>
+                <option value="Transport de véhicule">Transport de véhicule</option>
+                <option value="Projet automobile">Projet automobile</option>
+              </select>
+            </label>
+
+            <div class="project-fields is-visible" data-fields="default">
+              <label>
+                Message
+                <textarea name="Message général" rows="5" placeholder="Décrivez votre projet, votre budget, votre délai..."></textarea>
+              </label>
+            </div>
+
+            <div class="project-fields" data-fields="Achat de véhicule">
+              <div class="form-grid">
+                <label>Marque / modèle recherché <input type="text" name="Achat - modèle recherché" /></label>
+                <label>Budget maximum <input type="text" name="Achat - budget" /></label>
+                <label class="mileage-field">
+                  Kilométrage souhaité
+                  <div class="mileage-control">
+                    <input type="range" min="0" max="250000" step="5000" value="80000" data-mileage-range />
+                    <input type="number" min="0" max="500000" step="1000" value="80000" name="Achat - kilométrage souhaité" data-mileage-input />
+                  </div>
+                </label>
+                <label>Énergie / boîte <input type="text" name="Achat - énergie boîte" placeholder="Essence, diesel, hybride, auto..." /></label>
+              </div>
+              <label>
+                Options importantes
+                <textarea name="Achat - options" rows="4" placeholder="Couleur, finition, toit ouvrant, pack sport, délai..."></textarea>
+              </label>
+            </div>
+
+            <div class="project-fields" data-fields="Reprise / estimation">
+              <div class="form-grid">
+                <label>Marque / modèle <input type="text" name="Reprise - modèle" /></label>
+                <label>Année <input type="text" name="Reprise - année" /></label>
+                <label>Kilométrage <input type="text" name="Reprise - kilométrage" /></label>
+                <label>Motorisation / boîte <input type="text" name="Reprise - motorisation boîte" /></label>
+                <label>État carrosserie <input type="text" name="Reprise - état carrosserie" /></label>
+                <label>Entretien / factures <input type="text" name="Reprise - entretien" /></label>
+              </div>
+              <label>
+                Descriptif complet du véhicule
+                <textarea
+                  name="Reprise - descriptif complet"
+                  rows="5"
+                  placeholder="Finition, options, pneus, historique, défauts connus, carte grise, contrôle technique..."
+                ></textarea>
+              </label>
+            </div>
+
+            <div class="project-fields" data-fields="Import Europe">
+              <div class="form-grid">
+                <label>Pays souhaité <input type="text" name="Import - pays souhaité" placeholder="Allemagne, Belgique, Italie..." /></label>
+                <label>Modèle visé <input type="text" name="Import - modèle visé" /></label>
+                <label>Budget total <input type="text" name="Import - budget total" /></label>
+                <label>Délai souhaité <input type="text" name="Import - délai" /></label>
+              </div>
+              <label>
+                Demande de projet
+                <textarea name="Import - demande projet" rows="5" placeholder="Critères, options, transport, immatriculation, reprise éventuelle..."></textarea>
+              </label>
+            </div>
+
+            <button class="button primary" type="submit">Envoyer la demande</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="legal section" id="mentions-legales">
+        <div class="section-inner legal-layout">
+          <article>
+            <p class="eyebrow">Informations légales</p>
+            <h2>Mentions légales</h2>
+            <p>
+              Éditeur du site: TB Motor's. Activité: achat, revente, import, export et transport de véhicules.
+              Adresse, SIRET, TVA intracommunautaire, responsable de publication et hébergeur: informations à compléter
+              avec les données officielles de l'entreprise avant mise en ligne publique.
+            </p>
+            <p>
+              Les informations présentées sur ce site sont fournies à titre indicatif. Les disponibilités, prix,
+              prestations et délais peuvent évoluer selon le véhicule, le pays d'origine, le transport et les formalités.
+            </p>
+          </article>
+          <article id="conditions-utilisation">
+            <p class="eyebrow">Utilisation du site</p>
+            <h2>Conditions d'utilisation</h2>
+            <p>
+              L'utilisateur s'engage à transmettre des informations exactes dans les formulaires de contact, notamment
+              pour une demande d'achat, d'importation ou d'estimation de reprise. Les demandes envoyées ne valent pas
+              contrat, réservation ou engagement ferme sans validation écrite de TB Motor's.
+            </p>
+            <p>
+              Les visuels du site servent à présenter l'univers TB Motor's. Toute reproduction du logo, des textes ou des
+              images sans autorisation est interdite.
+            </p>
+          </article>
+          <article id="confidentialite">
+            <p class="eyebrow">Données personnelles</p>
+            <h2>Confidentialité</h2>
+            <p>
+              Les informations transmises via le formulaire de contact sont utilisées uniquement pour répondre à votre
+              demande automobile: achat, revente, reprise, import, export ou transport. Elles ne sont pas revendues à
+              des tiers.
+            </p>
+            <p>
+              Vous pouvez demander l'accès, la correction ou la suppression de vos données en contactant TB Motor's par
+              e-mail. Les données sont conservées uniquement pendant la durée nécessaire au traitement de votre demande
+              et au suivi commercial.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <a href="#contact" class="float-cta" aria-label="Démarrer un projet">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span class="float-cta-label">Projet</span>
+    </a>
+
+    <div class="lightbox" data-lightbox-modal aria-hidden="true">
+      <button class="lightbox-close" type="button" aria-label="Fermer" data-lightbox-close>×</button>
+      <img src="" alt="" data-lightbox-image />
+    </div>
+
+    <footer class="site-footer">
+      <img src="assets/logo-clean.png" alt="TB Motor's" />
+      <p>TB Motor's - Achat - Revente - Import / Export de véhicules</p>
+      <a href="#mentions-legales">Mentions légales</a>
+      <a href="#conditions-utilisation">Conditions d'utilisation</a>
+      <a href="#confidentialite">Confidentialité</a>
+      <a href="#accueil">Retour en haut</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
